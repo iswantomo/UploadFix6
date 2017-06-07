@@ -235,10 +235,7 @@ class MahasiswaController extends Controller
 		if ($jadwal_kelas == null)
             throw new NotFoundHttpException('jadwal kelas does not exist.');
 
-		//foreach($dataProvider->models as $data){print_r($data->id);}
-		//exit;
-
-		$link_download = "uploads/pilihan_ganda/".$jadwal_kelas->kode_ujian."_".$jadwal_kelas->matakuliah.".xls";
+		$link_download = "xls_pilihan_ganda/".$jadwal_kelas->kode_ujian."_".$jadwal_kelas->matakuliah.".xls";
 
         return $this->render('xls', [
             'searchModel' => $searchModel,
