@@ -39,8 +39,8 @@ class MahasiswaController extends Controller
      */
     public function actionIndex($id='')
     {
-        $searchModel = new SearchMahasiswa();
 
+        $searchModel = new SearchMahasiswa();
 		$searchModel->jadwal_kelas_id=$id;
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -64,26 +64,57 @@ class MahasiswaController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$refresh=0)
     {
 		$mahasiswa=$this->findModel($id);
 
-		/*
-		Yii::$app->view->params['kunci_jawaban'] = '';
-		$this->view->params['kunci_jawaban'] = $this->kunci_jawaban($mahasiswa->jadwal_kelas_id);
-
-		Yii::$app->view->params['jawaban_siswa'] = '';
-		$this->view->params['jawaban_siswa'] = $this->jawaban_siswa($mahasiswa->id);
-		*/
-		
 		$sql="select count(*) from kunci_jawaban where jadwal_kelas_id='".$mahasiswa->jadwal_kelas_id."' AND tipe_soal='".$mahasiswa->tipe_soal."'";
 		$jumlah_soal=Yii::$app->db->createCommand($sql)->queryScalar();
+
+		$kunci_jawaban = $this->kunci_jawaban($mahasiswa->jadwal_kelas_id,$mahasiswa->tipe_soal);
+		$jawaban_siswa = $this->jawaban_siswa($mahasiswa->id);
+
+		$jwb_siswa=['','A','B','C','D','E'];
+		$kunci=['','.',':',':.','::','::.'];
+		$benar=0;$salah=0;$tdk_diisi=0;
+		$total_skor=0;
+		$list_jawaban="";
+		for($i=1;$i<=$jumlah_soal;$i++){
+			if(empty($kunci_jawaban[$i])){
+				$benar=$benar + 1;
+			}else{
+				if(empty($jawaban_siswa[$i])){
+					$tdk_diisi=$tdk_diisi+1;
+				}else{
+					if($kunci_jawaban[$i] == $jawaban_siswa[$i] ){
+						$benar=$benar + 1;
+					}else{
+						$salah=$salah + 1;
+					}			
+				}
+			}
+		
+			$title=(empty($kunci_jawaban[$i]) ? '#' : $kunci[$kunci_jawaban[$i]]);
+			$list_jawaban .= "<div title='$title' >No. ".$i." ".(empty($jawaban_siswa[$i]) ? '-':"[".$jwb_siswa[$jawaban_siswa[$i]]."]")."</div>";
+		}
+		$skor_benar=$benar * $mahasiswa->jadwalKelas->nilai_benar;
+		$skor_salah=$salah * $mahasiswa->jadwalKelas->nilai_salah;
+		$nilai=$skor_benar + $skor_salah;
+
+		$mahasiswa->benar=$benar;
+		$mahasiswa->salah=$salah;
+		$mahasiswa->tidak_menjawab=$tdk_diisi;
+		$mahasiswa->skor=$nilai;
+		$mahasiswa->save();
+
+		if($refresh==1)
+			return $this->redirect(['index', 'id' => $mahasiswa->jadwal_kelas_id]);
+
 
         return $this->render('view', [
 			'mahasiswa' => $mahasiswa,
 			'jumlah_soal' => $jumlah_soal,
-			'kunci_jawaban' => $this->kunci_jawaban($mahasiswa->jadwal_kelas_id,$mahasiswa->tipe_soal),
-			'jawaban_siswa' => $this->jawaban_siswa($mahasiswa->id),
+			'list_jawaban' => $list_jawaban,
         ]);
     }
 
@@ -192,5 +223,27 @@ class MahasiswaController extends Controller
     public function actionHapusfile($nama_file,$kode_ujian,$id){
 		rename("uploads/".$kode_ujian."/". $nama_file,"uploads/sampah_file/".$kode_ujian . "_" . $nama_file);
 		$this->redirect(['index', 'id' => $id]);
+	}
+
+	public function actionXls($id){
+        $searchModel = new SearchMahasiswa();
+		$searchModel->jadwal_kelas_id=$id;
+
+		$dataProvider = $searchModel->searchHasil(Yii::$app->request->queryParams);
+
+        $jadwal_kelas= JadwalKelas::findOne($id);
+		if ($jadwal_kelas == null)
+            throw new NotFoundHttpException('jadwal kelas does not exist.');
+
+		//foreach($dataProvider->models as $data){print_r($data->id);}
+		//exit;
+
+		$link_download = "uploads/pilihan_ganda/".$jadwal_kelas->kode_ujian."_".$jadwal_kelas->matakuliah.".xls";
+
+        return $this->render('xls', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'link_download' => $link_download,
+        ]);		
 	}
 }

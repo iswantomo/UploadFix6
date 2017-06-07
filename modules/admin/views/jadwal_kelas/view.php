@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => 'jenis_ujian',
 				'format' => 'raw',
-				'value' => $model->TxtJenisUjian($model->jenis_ujian),
+				'value' => $model->TxtJenisUjian($model->jenis_ujian).($model->jenis_ujian==2 ? " <small>[ Nilai Benar = ".$model->nilai_benar.", Nilai Salah = ".$model->nilai_salah." ]</small>" : ""),
 			],
 			[
 				'label' => 'is_aktif',

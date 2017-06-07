@@ -99,6 +99,7 @@ class Jadwal_kelasController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+		$model->setScenario("newjadwal");
 
         if ($model->load(Yii::$app->request->post())) {
 			if($model->save()){

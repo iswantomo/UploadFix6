@@ -33,10 +33,6 @@ use kartik\datetime\DateTimePicker;
 
 	    <?php //echo $form->field($model, 'ruang_ujian')->textInput(['maxlength' => true]) ?>
         <?php echo $form->field($model, 'ruang_ujian')->dropDownList(array('Lab_Kom_5'=>'Lab_Kom_5','Lab_Kom_6'=>'Lab_Kom_6','Lab_Kom_7'=>'Lab_Kom_7','Lab_Kom_8'=>'Lab_Kom_8','Others...'=>'Others...'), ['prompt'=>':::']); ?>
-    
-	</div>
-    <div class="col-md-6">
-
 		<?= $form->field($model, 'tanggal')->widget('kartik\date\DatePicker', [
 			//'type' => DatePicker::TYPE_COMPONENT_APPEND,
 			'removeButton' => false,
@@ -47,6 +43,9 @@ use kartik\datetime\DateTimePicker;
 			]
 		]);	
 		?>
+    
+	</div>
+    <div class="col-md-6">
 
 		<?= $form->field($model, 'batas_waktu')->widget('kartik\datetime\DateTimePicker', [
 			//'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -63,7 +62,11 @@ use kartik\datetime\DateTimePicker;
 
 		<?php $model->jenis_ujian=(empty($model->jenis_ujian) ? 1 : $model->jenis_ujian); ?>
     	<?php echo $form->field($model, 'jenis_ujian')->dropDownList(array('1'=>'Upload','2'=>'Multiple Choice','3'=>'Upload dan Multiple Choice'), ['prompt'=>':::']); ?>
-
+		<div class="row">
+            <div class="col-md-6"><?= $form->field($model, 'nilai_benar')->textInput(['maxlength' => true]) ?></div>
+            <div class="col-md-6"><?= $form->field($model, 'nilai_salah')->textInput(['maxlength' => true]) ?></div>
+		</div>
+        
         <label>&nbsp;</label>
         <div class="form-group">
             <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -71,5 +74,4 @@ use kartik\datetime\DateTimePicker;
 	
     </div>
     <?php ActiveForm::end(); ?>
-
 </div>

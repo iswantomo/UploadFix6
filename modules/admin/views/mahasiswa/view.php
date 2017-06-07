@@ -12,33 +12,6 @@ use app\models\JadwalKelas;
 $this->title = 'Detail Jawaban ';
 //$this->params['breadcrumbs'][] = ['label' => 'Jadwal Kelas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-
-$jwb_siswa=['','A','B','C','D','E'];
-$kunci=['','.',':',':.','::','::.'];
-$benar=0;$salah=0;$tdk_diisi=0;
-$total_skor=0;
-$list_jawaban="";
-for($i=1;$i<=$jumlah_soal;$i++){
-	if(empty($kunci_jawaban[$i])){
-		$benar=$benar + 1;
-	}else{
-		if(empty($jawaban_siswa[$i])){
-			$tdk_diisi=$tdk_diisi+1;
-		}else{
-			if($kunci_jawaban[$i] == $jawaban_siswa[$i] ){
-				$benar=$benar + 1;
-			}else{
-				$salah=$salah + 1;
-			}			
-		}
-	}
-
-	$title=(empty($kunci_jawaban[$i]) ? '#' : $kunci[$kunci_jawaban[$i]]);
-	$list_jawaban .= "<div title='$title' >No. ".$i." ".(empty($jawaban_siswa[$i]) ? '-':"[".$jwb_siswa[$jawaban_siswa[$i]]."]")."</div>";
-}
-$nilai=empty($jumlah_soal) ? 0 : ($benar*100) / $jumlah_soal;
-
 ?>
 <div class="jadwal-kelas-create">
 
@@ -61,7 +34,11 @@ $nilai=empty($jumlah_soal) ? 0 : ($benar*100) / $jumlah_soal;
     <label>Matakuliah : </label> <?= $mahasiswa->jadwalKelas->matakuliah ?><br />
     
     <label>Prodi : </label> <?= $mahasiswa->jadwalKelas->prodi ?> &nbsp; &nbsp;    
-    <label>Ruang : </label> <?= $mahasiswa->jadwalKelas->ruang_ujian ?>    
+    <label>Ruang : </label> <?= $mahasiswa->jadwalKelas->ruang_ujian ?><br />
+
+    <label>Nilai Benar : </label> <?= $mahasiswa->jadwalKelas->nilai_benar ?> &nbsp; &nbsp;
+    <label>Nilai Salah : </label> <?= $mahasiswa->jadwalKelas->nilai_salah ?> 
+
     <hr />
     <div class="col-md-6">
         <label>Jenis Tes / Ujian : </label> <?= JadwalKelas::TxtJenisUjian($mahasiswa->jadwalKelas->jenis_ujian) ?><br />
@@ -70,18 +47,14 @@ $nilai=empty($jumlah_soal) ? 0 : ($benar*100) / $jumlah_soal;
         <div style="clear:both"></div>
         <hr />
     
-        <label>Skor / Nilai :</label> <?= number_format($nilai,2,".",""); ?> &nbsp; &nbsp;
-        <?php 
-			$mahasiswa->skor=$nilai;
-			$mahasiswa->save();
-		?>
+        <label>Skor / Nilai :</label> <?= number_format($mahasiswa->skor,2,".",""); ?> &nbsp; &nbsp;
         <hr />
 
     </div>
     <div class="col-md-6">
-        <label>Benar : </label> <?= $benar; ?><br />
-        <label>Salah : </label> <?= $salah; ?><br />
-        <label>Tidak Menjawab : </label> <?= $tdk_diisi; ?><br />
+        <label>Benar : </label> <?= $mahasiswa->benar; ?><br />
+        <label>Salah : </label> <?= $mahasiswa->salah; ?><br />
+        <label>Tidak Menjawab : </label> <?= $mahasiswa->tidak_menjawab; ?><br />
     </div>
 
 </div>

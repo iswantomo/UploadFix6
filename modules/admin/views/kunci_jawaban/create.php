@@ -14,10 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="kunci-jawaban-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?> #<?= Html::a(Html::encode($jadwal_kelas->kode_ujian), ['/admin/mahasiswa/index','id'=>$jadwal_kelas->id]); ?></h1>
     <hr />
-
-	<div class="col-md-5">
+	
+    <div class="col-md-5">
     	<label>Kode Ujian : </label> <?= $jadwal_kelas->kode_ujian ?> &nbsp; &nbsp;
         <label>Tanggal : </label> <?= date('d M Y',strtotime($jadwal_kelas->tanggal)) ?><br />
 
@@ -25,7 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <label>Matakuliah : </label> <?= $jadwal_kelas->matakuliah ?><br />
         
         <label>Prodi : </label> <?= $jadwal_kelas->prodi ?> &nbsp; &nbsp;
-        <label>Ruang : </label> <?= $jadwal_kelas->ruang_ujian ?>
+        <label>Ruang : </label> <?= $jadwal_kelas->ruang_ujian ?><br />
+
+        <label>Nilai Benar : </label> <?= $jadwal_kelas->nilai_benar ?> &nbsp; &nbsp;
+        <label>Nilai Salah : </label> <?= $jadwal_kelas->nilai_salah ?> 
+
         <div style="clear:both"></div>
         <hr />
 		<?= $this->render('_form', [

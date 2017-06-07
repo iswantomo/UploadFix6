@@ -39,7 +39,7 @@ class JadwalKelas extends \yii\db\ActiveRecord
         return [
 			[['kode_ujian', 'nama_dosen', 'matakuliah', 'prodi', 'ruang_ujian', 'tanggal'], 'required','on'=>'newjadwal'],
 			[['kode_ujian', 'nim'], 'required','on'=>'prosesMahasiswa','message'=>'{attribute} tidak boleh kosong'],
-            [['tanggal','is_aktif','batas_waktu','jenis_ujian'], 'safe'],
+            [['tanggal','is_aktif','batas_waktu','jenis_ujian','nilai_benar','nilai_salah'], 'safe'],
             [['kode_ujian', 'nama_dosen', 'matakuliah', 'prodi', 'ruang_ujian'], 'string', 'max' => 255],
         ];
     }
@@ -61,6 +61,8 @@ class JadwalKelas extends \yii\db\ActiveRecord
             'jenis_ujian' => 'Jenis Ujian/Tes',
 			'is_aktif' => 'Is Aktif',
 			'nim' => 'NIM',
+			'nilai_benar' => 'Nilai Benar',
+			'nilai_salah' => 'Nilai Salah',
         ];
     }
 

@@ -27,7 +27,8 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
 			<?= $searchModel->jadwalKelas->matakuliah." - ".$searchModel->jadwalKelas->nama_dosen ?><br />
             Tanggal : <?= date('d M Y',strtotime($searchModel->jadwalKelas->tanggal)) ?><br />
             Batas Waktu : <?= date('d M Y, H:i:s',strtotime($searchModel->jadwalKelas->batas_waktu)) ?><br />
-            Jenis Ujian : <?= $searchModel->jadwalKelas->jenis_ujian==1 ? 'Upload' : ($searchModel->jadwalKelas->jenis_ujian==2 ? 'Multiple Choice':'not set') ?><br />
+            Jenis Ujian : <?= $searchModel->jadwalKelas->jenis_ujian==1 ? 'Upload' : ($searchModel->jadwalKelas->jenis_ujian==2 ? 'Multiple Choice':'not set') ?> <?= ($searchModel->jadwalKelas->jenis_ujian==2 ? " <small>[ Nilai Benar = ".$searchModel->jadwalKelas->nilai_benar.", Nilai Salah = ".$searchModel->jadwalKelas->nilai_salah." ]</small>" : "") ?>
+            <br />
 		</small>
     </div>
 
@@ -99,7 +100,7 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
     </table>
 
     <div class="panel panel-default">
-      <div class="panel-heading">Multiple Choice - <?= Html::a('Set Kunci Jawaban', ['/admin/kunci_jawaban/create', 'jk_id' => $searchModel->jadwalKelas->id], ['class' => 'btn btn-xs btn-primary']) ?></div>
+      <div class="panel-heading">Multiple Choice - <?= Html::a('Set Kunci Jawaban', ['/admin/kunci_jawaban/create', 'jk_id' => $searchModel->jadwalKelas->id], ['class' => 'btn btn-xs btn-primary']) ?> &nbsp; <?= Html::a("<i class='glyphicon glyphicon-download'> </i> Excel", ['xls','id'=>$searchModel->jadwal_kelas_id], ['title' => 'Download Excel']) ?></div>
       <div class="panel-body"  style="display:<?= $jadwal_kelas->jenis_ujian==2 ? 'block' : 'none' ?>">
 		<?php Pjax::begin(); ?>    <?= GridView::widget([
                 'dataProvider' => $dataProvider_hasil,
@@ -118,7 +119,7 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
 						'attribute' => 'skor',
 						'format' => 'raw',
 						'value' => function($data){
-							$link=Html::a("<i class='glyphicon glyphicon-refresh'> </i>", ['view', 'id' => $data->id], ['title' => 'Reset IP Address']);
+							$link=Html::a("<i class='glyphicon glyphicon-refresh'> </i>", ['view', 'id' => $data->id, 'refresh' => 1], ['title' => 'Reset IP Address']);
 							return $link." &nbsp; &nbsp; ".number_format($data->skor,2,".","");;
 						},
 					],

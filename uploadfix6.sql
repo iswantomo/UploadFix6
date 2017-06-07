@@ -84,3 +84,12 @@ CREATE TABLE `user_role` (
 
 INSERT INTO USER SET id=1,`name`='admin',username='admin',`password`=MD5('admin');
 -- 2017-06-06 06:39:50
+
+ALTER TABLE jadwal_kelas ADD COLUMN nilai_salah FLOAT DEFAULT 0 AFTER jenis_ujian;
+ALTER TABLE jadwal_kelas ADD COLUMN nilai_benar FLOAT DEFAULT 0 AFTER jenis_ujian;
+
+ALTER TABLE mahasiswa ADD COLUMN tidak_menjawab int(2) DEFAULT 0 AFTER skor;
+ALTER TABLE mahasiswa ADD COLUMN salah int(2) DEFAULT 0 AFTER skor;
+ALTER TABLE mahasiswa ADD COLUMN benar int(2) DEFAULT 0 AFTER skor;
+
+----------------------------
