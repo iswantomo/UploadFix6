@@ -31,10 +31,11 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
             <br />
 		</small>
     </div>
-
+	<h4>Log Mahasiswa <small style="color:#999999; font-size:11px">yang sudah masuk ke sistem</small></h4>
 	<?php Pjax::begin(); ?>    <?= GridView::widget([
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider_Ipaddress,
             'filterModel' => $searchModel,
+			'summary'=>'', 
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 //'id',
@@ -75,7 +76,7 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
         </thead>
             <tr>
                 <th>No.</th>
-                <th>Uploaded Files - <?= Html::a('Create ZIP', ['/admin/jadwal_kelas/kompres_file', 'kode_ujian' => $searchModel->jadwalKelas->kode_ujian], ['class' => 'btn btn-xs btn-primary']) ?></th>
+                <th>Hasil :: Uploaded Files - <?= Html::a('Create ZIP', ['/admin/jadwal_kelas/kompres_file', 'kode_ujian' => $searchModel->jadwalKelas->kode_ujian], ['class' => 'btn btn-xs btn-primary']) ?></th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
@@ -100,7 +101,7 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
     </table>
 
     <div class="panel panel-default">
-      <div class="panel-heading">Multiple Choice - <?= Html::a('Set Kunci Jawaban', ['/admin/kunci_jawaban/create', 'jk_id' => $searchModel->jadwalKelas->id], ['class' => 'btn btn-xs btn-primary']) ?> &nbsp; <?= Html::a("<i class='glyphicon glyphicon-download'> </i> Excel", ['xls','id'=>$searchModel->jadwal_kelas_id], ['title' => 'Download Excel']) ?></div>
+      <div class="panel-heading"><b>Hasil :: Multiple Choice</b> - <?= Html::a('Set Kunci Jawaban', ['/admin/kunci_jawaban/create', 'jk_id' => $searchModel->jadwalKelas->id], ['class' => 'btn btn-xs btn-primary']) ?> &nbsp; <?= Html::a("<i class='glyphicon glyphicon-download'> </i> Excel", ['xls','id'=>$searchModel->jadwal_kelas_id], ['title' => 'Download Excel']) ?></div>
       <div class="panel-body"  style="display:<?= $jadwal_kelas->jenis_ujian==2 ? 'block' : 'none' ?>">
 		<?php Pjax::begin(); ?>    <?= GridView::widget([
                 'dataProvider' => $dataProvider_hasil,

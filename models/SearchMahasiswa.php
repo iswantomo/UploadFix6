@@ -103,4 +103,37 @@ class SearchMahasiswa extends Mahasiswa
 
         return $dataProvider;
     }
+
+    public function searchIpaddress($params)
+    {
+        $query = Mahasiswa::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+			'pagination' => [ 'pageSize' => 50 ],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'jadwal_kelas_id' => $this->jadwal_kelas_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'nim', $this->nim])
+            ->andFilterWhere(['like', 'nama', $this->nama])
+            ->andFilterWhere(['like', 'ip_address', $this->ip_address]);
+
+        return $dataProvider;
+    }
+
 }

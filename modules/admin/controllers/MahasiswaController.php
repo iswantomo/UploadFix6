@@ -43,7 +43,7 @@ class MahasiswaController extends Controller
         $searchModel = new SearchMahasiswa();
 		$searchModel->jadwal_kelas_id=$id;
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider_Ipaddress = $searchModel->searchIpaddress(Yii::$app->request->queryParams);
 		$dataProvider_hasil = $searchModel->searchHasil(Yii::$app->request->queryParams);
 
         $jadwal_kelas= JadwalKelas::findOne($id);
@@ -53,7 +53,7 @@ class MahasiswaController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider_Ipaddress' => $dataProvider_Ipaddress,
             'dataProvider_hasil' => $dataProvider_hasil,
 			'jadwal_kelas' => $jadwal_kelas,
         ]);
