@@ -99,7 +99,8 @@ class MahasiswaController extends Controller
 		}
 		$skor_benar=$benar * $mahasiswa->jadwalKelas->nilai_benar;
 		$skor_salah=$salah * $mahasiswa->jadwalKelas->nilai_salah;
-		$nilai=$skor_benar + $skor_salah;
+		//$nilai=$skor_benar + $skor_salah;
+		$nilai=(($skor_benar / ($mahasiswa->jadwalKelas->nilai_benar * $jumlah_soal))*100) + $skor_salah;
 
 		$mahasiswa->benar=$benar;
 		$mahasiswa->salah=$salah;
