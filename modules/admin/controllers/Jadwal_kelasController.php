@@ -67,7 +67,7 @@ class Jadwal_kelasController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($pilihan='aktif')
     {
         $model = new JadwalKelas();
 		$model->setScenario('newjadwal');
@@ -80,12 +80,20 @@ class Jadwal_kelasController extends Controller
             return $this->redirect(['create']);
         } else {
 			$searchModel = new SearchJadwalKelas();
-			$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+			if($pilihan=='aktif'){
+				$searchModel->is_aktif='1';
+			}else if($pilihan=='standby'){
+				$searchModel->is_aktif='0';
+				$searchModel->tanggal=date('Y-m-d');
+			}
+			
+			$dataProvider = $searchModel->search(Yii::$app->request->queryParams);			
 
             return $this->render('create', [
                 'model' => $model,
 				'searchModel' => $searchModel,
 				'dataProvider' => $dataProvider,
+				'pilihan' => $pilihan,
             ]);
         }
     }

@@ -26,12 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <div style="clear:both"></div>
 
 <hr />
+
+<ul class="nav nav-tabs">
+  <li class="<?php echo ($pilihan=='aktif' ? "active" : ""); ?>"><?= Html::a('Status Aktif',array('create','pilihan'=>'aktif'))?></li>
+  <li class="<?php echo ($pilihan=='standby' ? "active" : ""); ?>"><?= Html::a('Status Stand By',array('create','pilihan'=>'standby'))?></li>
+  <li class="<?php echo ($pilihan=='semua' ? "active" : ""); ?>"><?= Html::a('Semua data',array('create','pilihan'=>'semua'))?></li>
+</ul>
+
+<br />
 <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
 		'tableOptions' => [
-			'class'=>'table table-striped xxx',
+			'class'=>'table table-bordered',
 		],
+		//'summary' => "{begin} - {end} {count} {totalCount} {page} {pageCount}",
+		'summary' => "<small><i>Total : {totalCount} item</i></small>",
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -41,7 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'kode_ujian',
 				'format' => 'raw',
 				'value' => function($data){
-					return "<a href='".Yii::$app->urlManager->createUrl(['admin/mahasiswa/index','id'=>$data->id])."'>".$data->kode_ujian."</a>";
+					//return "<a href='".Yii::$app->urlManager->createUrl(['admin/mahasiswa/index','id'=>$data->id])."'>".$data->kode_ujian."</a>";
+					return "<a href='".Yii::$app->urlManager->createUrl(['admin/mahasiswa/index','id'=>$data->id])."'><small style='font-size:9px'>".substr($data->kode_ujian,0,6)."</small>".substr($data->kode_ujian,6,4)."</a>";
 				},
 			],
 			'ruang_ujian',
@@ -60,6 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'tanggal',
 				'format' => 'raw',
+				'filter'=>$pilihan=='standby' ? false : null,
 				'value' => function($data){
 					$batas=(empty($data->batas_waktu) ? '#' : date('d M Y H:i:s',strtotime($data->batas_waktu)));
 					$ruang=(empty($data->ruang_ujian) ? '#' : $data->ruang_ujian);
@@ -69,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'is_aktif',
 				'format' => 'raw',
-				'filter'=>array("1"=>"Aktif","0"=>"No"),
+				'filter'=>$pilihan!='semua' ? false : array("1"=>"Aktif","0"=>"No"),
 				'value' => function($data){
 					return ($data->is_aktif==1) ? 'Aktif' : "-";
 				},
