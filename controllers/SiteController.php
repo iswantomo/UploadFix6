@@ -106,7 +106,8 @@ class SiteController extends Controller
 		}
 
 		$item_jadwal_kelas = ArrayHelper::map(JadwalKelas::find()
-			->select(['kode_ujian',"concat(CONCAT(SUBSTRING(kode_ujian, 1,3), ' ',SUBSTRING(kode_ujian, 4,3), ' ', SUBSTRING(kode_ujian, 7,4)),' [ ',ruang_ujian,' - ',matakuliah,' ]') as ruang_ujian"])
+			//->select(['kode_ujian',"concat(CONCAT(SUBSTRING(kode_ujian, 1,3), ' ',SUBSTRING(kode_ujian, 4,3), ' ', SUBSTRING(kode_ujian, 7,4)),' [ ',ruang_ujian,' - ',matakuliah,' ]') as ruang_ujian"])
+			->select(['kode_ujian',"concat(CONCAT('... ', SUBSTRING(kode_ujian, 7,4)),' [ ',ruang_ujian,' - ',matakuliah,' ]') as ruang_ujian"])
 			->where(['is_aktif'=>1])
 			->all(), 'kode_ujian', 'ruang_ujian')
 		;
