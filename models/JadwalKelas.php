@@ -52,8 +52,8 @@ class JadwalKelas extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'kode_ujian' => 'Token / Kode Ujian',
-            'nama_dosen' => 'Nama Dosen',
-            'matakuliah' => 'Matakuliah',
+            'nama_dosen' => 'Dosen',
+            'matakuliah' => 'Keterangan',//'Matakuliah',
             'prodi' => 'Prodi',
             'ruang_ujian' => 'Ruang Ujian',
             'tanggal' => 'Tanggal',

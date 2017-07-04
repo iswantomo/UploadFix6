@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/jadwal_kelas/create'], ['class' => 'btn btn-xs btn-info','title' => 'Kembali ke Jadwal Kelas']);
 ?>
-
+ &nbsp; <a href="" class='btn btn-xs btn-info' ><i class='glyphicon glyphicon-refresh'> </i> Refresh</a>
 <div style='clear:both'></div>
 <hr />
 <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
