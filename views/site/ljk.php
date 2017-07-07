@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
 			<?php $form = ActiveForm::begin(); ?>
                 <div class="form-group">
-                    <?= Html::submitButton('Selesai', ['class' => 'btn btn-success']) ?>
+                    <?= Html::a('Selesai',['index'], ['class' => 'btn btn-success']) ?>
                 </div>        
             <?php ActiveForm::end(); ?>
         </div>
