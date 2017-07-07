@@ -132,6 +132,9 @@ echo Html::a("<i class='glyphicon glyphicon-backward'> </i> Kembali", ['/admin/j
                 ],
             ]); ?>
         <?php Pjax::end(); ?>
+        
+        <br />
+        <?= Html::a("Koreksi Otomatis", ['/admin/mahasiswa/koreksi','id'=>$searchModel->jadwalKelas->id], ['class' => 'btn btn-xs btn-warning','title' => 'Koreksi Semua Jawaban Peserta Secara Otomatis','onclick'=>'$(this).hide();' ]); ?>
 
       </div>
     </div>

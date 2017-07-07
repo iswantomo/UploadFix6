@@ -64,7 +64,7 @@ class MahasiswaController extends Controller
      * @param string $id
      * @return mixed
      */
-    public function actionView($id,$refresh=0)
+    public function actionView($id,$refresh=0,$is_koreksi=0)
     {
 		$mahasiswa=$this->findModel($id);
 
@@ -111,12 +111,15 @@ class MahasiswaController extends Controller
 		if($refresh==1)
 			return $this->redirect(['index', 'id' => $mahasiswa->jadwal_kelas_id]);
 
-
-        return $this->render('view', [
-			'mahasiswa' => $mahasiswa,
-			'jumlah_soal' => $jumlah_soal,
-			'list_jawaban' => $list_jawaban,
-        ]);
+		if($is_koreksi == 1){
+			return true;
+		}else{
+			return $this->render('view', [
+				'mahasiswa' => $mahasiswa,
+				'jumlah_soal' => $jumlah_soal,
+				'list_jawaban' => $list_jawaban,
+			]);
+		}
     }
 
     /**
@@ -243,5 +246,17 @@ class MahasiswaController extends Controller
             'dataProvider' => $dataProvider,
             'link_download' => $link_download,
         ]);		
+	}
+
+	public function actionKoreksi($id){
+		$jadwalkelas = JadwalKelas::findOne($id);
+		if ($jadwalkelas == null)
+            throw new NotFoundHttpException('The requested page "jadwalkelas" does not exist.');
+		
+		$mahasiswa=Mahasiswa::find()->where(['jadwal_kelas_id'=>$id])->all();
+		foreach($mahasiswa as $data){
+			$this->actionView($data->id,$refresh=0,$is_koreksi=1);
+			return $this->redirect(['index', 'id' => $id]);
+		}
 	}
 }
