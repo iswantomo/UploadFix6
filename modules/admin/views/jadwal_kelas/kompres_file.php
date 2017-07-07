@@ -12,5 +12,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <hr>
     
     <b>Sukses Mengkompres Folder . <?= $kode_ujian ?></b><br><br>
-	<a class="btn btn-success" href="uploads/<?= $kode_ujian ?>/<?= $kode_ujian.".zip" ?>" >Klik Untuk Download</a>
+	<a class="btn btn-success" href="uploads/<?= $kode_ujian ?>/<?= $kode_ujian."_".$ket_file.".zip" ?>" >Klik Untuk Download</a>
 </div>

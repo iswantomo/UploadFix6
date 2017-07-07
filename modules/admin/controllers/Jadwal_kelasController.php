@@ -159,22 +159,29 @@ class Jadwal_kelasController extends Controller
 	}
 
 	 public function actionKompres_file($kode_ujian){
-		if (!is_dir("uploads/".$kode_ujian."/"))
+	 	$jadwalkelas=JadwalKelas::find()->where(array('kode_ujian'=>$kode_ujian))->one();
+		if($jadwalkelas===null)
+			throw new NotFoundHttpException('data tidak ditemukan');
+	 
+		if (!is_dir("uploads/".$jadwalkelas->kode_ujian."/"))
 			throw new NotFoundHttpException('folder tidak ada');
 
-		if ($this->is_dir_empty("uploads/".$kode_ujian."/"))
+		if ($this->is_dir_empty("uploads/".$jadwalkelas->kode_ujian."/"))
 			throw new NotFoundHttpException('Isi folder Kosong');
 	 
-	 	$this->zipfolder("uploads/".$kode_ujian."/");
+	 	$this->zipfolder("uploads/".$jadwalkelas->kode_ujian."/");
 		//copy("upload/file.zip", "upload/".$namafolder."/file.zip");
-		copy("uploads/file.zip", "uploads/".$kode_ujian."/".$kode_ujian.".zip");
+		$ket_file=str_replace(" ","_",$jadwalkelas->matakuliah);
+		$ket_file=str_replace("'","",$ket_file);
+		copy("uploads/file.zip", "uploads/".$jadwalkelas->kode_ujian."/".$jadwalkelas->kode_ujian."_".$ket_file.".zip");
 		//return $this->redirect(['create']);
 		
-		$sql="update jadwal_kelas set is_aktif='0' where kode_ujian='".$kode_ujian."'";
+		$sql="update jadwal_kelas set is_aktif='0' where kode_ujian='".$jadwalkelas->kode_ujian."'";
 		Yii::$app->db->createCommand($sql)->execute();
 		
         return $this->render('kompres_file', [
-            'kode_ujian' => $kode_ujian,
+            'kode_ujian' => $jadwalkelas->kode_ujian,
+			'ket_file' => $ket_file,
         ]);
 	 }
 
